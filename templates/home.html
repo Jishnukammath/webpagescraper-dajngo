@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    .container{
+        display: flex;
+    
+    
+    }
+    .left{
+        width: 30%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        
+    }
+    .left input{
+        margin-bottom: 15px;
+        outline-style: none;
+        padding-left: 8px;
+        width: 400px;
+        height: 30px;
+                background-color: aliceblue;
+
+    }
+    .left button{
+        padding: 10px 30px;
+    }
+    .left-inner{
+        padding: 100px 150px;
+    }
+    
+    .right{
+        width: 70%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: aliceblue;
+
+    }
+    .right-inner{
+        width: 90%;
+        padding: 100px 150px;
+
+
+    }
+    table{
+    width: 100%;
+    table-layout: fixed;
+
+
+    }
+    
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    td{
+        height: 100px;
+        
+    }
+    .scroll {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+    
+    }
+
+    .remove {
+        padding: 5px 10px;
+        margin-bottom: 8px;
+
+    }
+    .fav{
+        padding: 5px 10px;
+
+    }
+
+
+    </style>
+</head>
+<body>
+  <!-- container start -->
+    <div class="container">
+        <!-- left div start -->
+        <div class="left">
+            <div class="left-inner">
+                <h3>Webpage Scraper</h3>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input placeholder="Enter website URL" name="link"><br>
+                    <button type="submit">Get Insights</button>  
+                </form>
+                {% for i in messages %}
+                {{i}}
+                {% endfor %}
+            </div>
+        </div>
+        <!-- left div end -->
+        <!-- right div start -->
+        <div class="right">
+             <div class="right-inner">
+                <h1>Result</h1>
+                <table >
+                    <tr>
+                        <th style="width: 20%;">Domain name</th>
+                        <th>wordcount</th>
+                        <th>Favourite</th>
+                        <th style="width: 25%;">Web-Links</th>
+                        <th  style="width: 25%;">Media-Link</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for i in content %}
+                    <tr>
+                        <td class="scroll">{{i.currentLink}}</td>
+                        <td>{{i.wordCount}}</td>
+                        <td>{{i.fav}}</td>
+                        <td > <div class="scroll">{{i.links}}</div></td>
+                        <td ><div class="scroll">{{i.mediaLinks}}</div></td>
+
+                        <td>
+                            <form action="{% url 'remove' i.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="">Remove</button>
+                            </form>
+                            <br>
+                    
+                            <form action="{% url 'favourite' i.id %}" method="post">
+                                {% csrf_token %}
+                                {% if i.fav == 0 %}
+                                <button class="">favourite</button>
+                                {% else %}
+                                <button class="">remove fav</button>
+
+                                {% endif%}
+                            </form>
+                        </td>   
+                    </tr>
+                    {% endfor %}
+            
+                </table>
+            </div>
+        </div>
+         <!-- right div end -->
+
+    </div>
+    <!-- container end -->
+</body>
+</html>
