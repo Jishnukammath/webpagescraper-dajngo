@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from .models import word_count
 
-# Create your views here.
+# Create your views here.      
 def home(request):
     content=word_count.objects.all()
     if request.method=='POST':
